@@ -45,10 +45,19 @@ def generatePairs(num_players):
 
     if (repeated == 2 and len(generated) != len(q)): generated.append(tuple(counts)) # counts will have 1 pair remaining - a repeat
     return generated
-        
-def main():
-    generated = generatePairs(7)
-    print(generated)
 
-main()
+def load_questions(n): 
+    with open('questions.txt') as f:
+        return random.sample(f.read().split('\n')[:-1], n)
+        
+def assign_questions(players):
+    num = len(players)
+    q = load_questions(num)
+    generated = generatePairs(7)
+    for a,b in generated:
+        print(a)
+        players['q'] = (q[a], q[b])
+    print(players)
+
+assign_questions({'a':None, 'b':None, 'c':None, 'd':None})
 
