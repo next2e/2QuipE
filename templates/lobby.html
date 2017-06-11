@@ -1,0 +1,28 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(function() {
+    var j = setInterval(function() {
+        $.get("/check_started", function(response) {
+          console.log(repsonse)
+          data = $.parseJSON(response);
+          if(data['start'] == true) {
+            $("#main").text("Someone pressed the button to start the game!");
+          }
+          $("#players").text(data['players']);
+        });
+    }, 1000);
+});
+</script>
+</head>
+
+<body>
+
+<p>Welcome {{name}}!</p>
+<p id="main">When everyone has joined, someone (anyone) can start the game.</p>
+<p>Current players: <span id="players">Loading...</span></p>
+
+<p id="start"><a href="/answer/{{name}}">Start Game!</a></p>
+</body>
+</html>
