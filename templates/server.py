@@ -8,7 +8,8 @@ players = {}
 # Home page
 @app.route('/')
 def main():
-    return render_template('index.html',
+    return render_template('index.html', players=
+        (', '.join(list(players.keys())) if players else "Nobody")
 
 # Join a game
 @app.route('/join', methods=['POST'])
