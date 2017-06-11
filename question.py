@@ -30,7 +30,7 @@ def generatePairs(num_players):
 
     while (len(generated) != len(q) and repeated < 2):
         repeated += 1
-        print ("Going again...")
+        #print ("Going again...")
         for index,s in enumerate(sets):
             # if this combination still is left in counts, remove
             # it so that we never use a question more than twice
@@ -53,11 +53,8 @@ def load_questions(n):
 def assign_questions(players):
     num = len(players)
     q = load_questions(num)
-    generated = generatePairs(7)
-    for a,b in generated:
-        print(a)
-        players['q'] = (q[a], q[b])
-    print(players)
-
-assign_questions({'a':None, 'b':None, 'c':None, 'd':None})
+    p = generatePairs(num)
+    for i,name in enumerate(players):
+        players[name]['questions'] = (q[p[i][0]], q[p[i][1]])
+    return players
 
