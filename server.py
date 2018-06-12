@@ -17,6 +17,6 @@ def join():
     name = request.form["username"]
     players[name] = None
     session['name'] = name
-    return redirect('/lobby')
+    return redirect('/lobby/' + name)
 
 app.run(host='127.0.0.1', port=8000)

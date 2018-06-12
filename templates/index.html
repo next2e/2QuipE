@@ -1,23 +1,15 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-    $(function() {
-        $('#submit').click(function() {
-            var name = $("#name").val();
-            $.post('/join', {username: name}, function(response) {
-                console.log("it worked");
-            });
-        });
-    });
-    </script>
 </head>
 <body>
 
 <h1>Welcome to 2QuipE!</h1>
 <p>Enter your username to join the game:</p> <br>
-<input id="name" type="text"></input>
-<button id="submit">Submit</button>
+<form action="/join" method="POST">
+    <input name="username" type="text" value=""></input>
+    <input type="submit" value="Let's Go!">
+</form>
 
 <p>Current players: {{players}}</p>
 
