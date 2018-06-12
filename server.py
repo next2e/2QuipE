@@ -1,5 +1,6 @@
 from flask import Flask, session, render_template, redirect, request
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'woohoowhackamole!'
 
 # global variables
 global players
@@ -18,5 +19,10 @@ def join():
     players[name] = None
     session['name'] = name
     return redirect('/lobby/' + name)
+
+# Lobby
+@app.route('/lobby/<name>')
+def lobby(name):
+    return render_template('lobby.html', name=name)
 
 app.run(host='127.0.0.1', port=8000)
