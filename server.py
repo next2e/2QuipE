@@ -25,4 +25,20 @@ def join():
 def lobby(name):
     return render_template('lobby.html', name=name)
 
+# Answer
+@app.route('/answer/<name>', methods=['GET','POST'])
+def answer(name):
+	return render_template('answer.html', name=name)
+
+# Vote for the best responses
+# once this game expands we can try to make multiple lobbies/multiple games at once
+@app.route('/vote', methods=['GET','POST'])
+def vote():
+	return render_template('vote.html')
+
+# Display scores
+@app.route('/scores', methods=['GET'])
+def scores():
+	return render_template('scores.html')
+
 app.run(host='127.0.0.1', port=8000)
