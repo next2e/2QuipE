@@ -1,14 +1,34 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    // button click
+    $(function() {
+        $('#ansSubmit').click(function() {
+            var name = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
+            console.log("name");
+            var ans1 = $("#answer1").val();
+            var ans2 = $("#answer2").val();
+            $.post('/submit', {username: name, answer1: ans1, answer2: ans2}, function(response) {
+                console.log("it worked");
+            });
+        });
+    });
+</script>
 </head>
 <body>
 	
-	<p>Answer these two questions~ </p>
-	<div id="q1">QUESTION 1 HERE</div>
-	<div id="q2">QUESTION 2 HERE</div>
+	<p>Answer these two prompts. Be creative! You can only submit once</p>
+	<div id="q1">
+		<label for="answer1">PROMPT 1 HERE</label>
+		<input type="text" id="answer1">
+	</div>
+	<div id="q2">
+		<label for="answer2">PROMPT 2 HERE</label>
+		<input type="text" id="answer2">
+	</div>
 
-	<button id="ansSubmit">Submit</button>
+	<a id="ansSubmit" href="/vote">Submit</a>
 
 </body>
 </html>

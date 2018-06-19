@@ -7,10 +7,12 @@ def makeSets(num_players):
     
     # scramble the sets for randomness
     sets = []
+    n = len(rawsets)
     for i in range((num_players*(num_players-1))//2):
-        j = random.randint(0,len(rawsets)-1)
+        j = random.randint(0,n-1)
         sets.append(rawsets[j])
         rawsets.remove(rawsets[j])
+        n -= 1
     
     return sets, q
 

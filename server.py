@@ -16,7 +16,7 @@ def main():
 @app.route('/join', methods=['POST'])
 def join():
     name = request.form["username"]
-    players[name] = None
+    players[name] = dict()
     session['name'] = name
     return redirect('/lobby/' + name)
 
@@ -26,13 +26,22 @@ def lobby(name):
     return render_template('lobby.html', name=name)
 
 # Answer
-@app.route('/answer/<name>', methods=['GET','POST'])
+@app.route('/answer/<name>')
 def answer(name):
 	return render_template('answer.html', name=name)
 
+@app.route('/submit', methods=['POST'])
+def submit():
+    name = request.form["username"]
+    print (request.form)
+    players[name]["responses"] = (request.form["answer1"],request.form["answer2"])
+    print ("answer 1: " + players[name]["responses"][0])
+    print ("answer 2: " + players[name]["responses"][1])
+    return redirect('/vote')
+
 # Vote for the best responses
 # once this game expands we can try to make multiple lobbies/multiple games at once
-@app.route('/vote', methods=['GET','POST'])
+@app.route('/vote', methods=['GET'])
 def vote():
 	return render_template('vote.html')
 
