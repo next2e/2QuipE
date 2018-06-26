@@ -1,10 +1,13 @@
 from flask import Flask, session, render_template, redirect, request
+import os
+os.system("python question.py")
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'woohoowhackamole!'
 
 # global variables
-global players
-players = {}
+global players; global questions
+players = {}; questions;
 
 # Home page
 @app.route('/')
@@ -24,6 +27,12 @@ def join():
 @app.route('/lobby/<name>')
 def lobby(name):
     return render_template('lobby.html', name=name)
+
+# Check started
+# FIX THIS UP LATER
+@app.route('/check_started', methods=['GET'])
+def checkStarted():
+    return players
 
 # Answer
 @app.route('/answer/<name>')

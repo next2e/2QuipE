@@ -52,11 +52,22 @@ def load_questions(n):
     with open('questions.txt') as f:
         return random.sample(f.read().split('\n')[:-1], n)
         
-def assign_questions(players):
+def assign_questions(players, questions):
     num = len(players)
     q = load_questions(num)
     p = generatePairs(num)
+    # assign questions to players
     for i,name in enumerate(players):
         players[name]['questions'] = (q[p[i][0]], q[p[i][1]])
-    return players
+    # assign players to questions
+    # after answers are assigned to each question,
+    # this makes displaying answers on vote.html easier
+    for name in players:
+        for i in range(2):
+            if players[name]['questions'][i] in questions:
+                questions[players[name]['questions'][i]].append(name)
+            else:
+                questions[players[name]['questions'][i]] = [name]
+
+    return players, questions
 
