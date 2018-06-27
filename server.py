@@ -6,8 +6,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'woohoowhackamole!'
 
 # global variables
-global players; global questions; global started
-players = {}; started = False
+global players; global questions
+players = {};
+
+started = False
 
 # Home page
 @app.route('/')
@@ -30,8 +32,9 @@ def lobby(name):
 
 # Check started
 @app.route('/lobby/check_started', methods=['GET'])
-def checkStarted(name):
+def checkStarted():
     data = dict()
+    name = session['name']
     data["start"] = started
     data["players"] = (', '.join(list(players.keys())) if players else "Nobody")
     if started:
@@ -42,6 +45,7 @@ def checkStarted(name):
 @app.route('/lobby/check_started', methods=['POST'])
 def start():
     started = True
+    return 'ok' #required to return something
 
 # Answer
 @app.route('/answer/<name>')

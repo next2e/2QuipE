@@ -4,24 +4,19 @@
 <script> // check started
 $(function() {
     var j = setInterval(function() {
-        $.get("check_started", function(response) {
-          console.log(response)
-          data = $.parseJSON(response);
-          // data = response
+        $.get("check_started", function(data) {
           if(data['start'] == true) {
             $("#main").text("Someone pressed the button to start the game!");
           }
           $("#players").text(data['players']);
         });
     }, 1000);
-});
-</script>
-<script>
   $("#start").click(function() {
     $.post("check_started", {}, function() {
       console.log("someone clicked the start button")
     })
   })
+});
 </script>
 </head>
 
@@ -31,6 +26,6 @@ $(function() {
 <p id="main">When everyone has joined, someone (anyone) can start the game.</p>
 <p>Current players: <span id="players">Loading...</span></p>
 
-<p id="start"><a href="/answer/{{name}}">Start Game!</a></p>
+<button id="start">Start Game!</button>
 </body>
 </html>
