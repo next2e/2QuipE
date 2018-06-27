@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, redirect, request
+from flask import Flask, session, render_template, redirect, request, jsonify
 import os
 os.system("python question.py")
 
@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'woohoowhackamole!'
 
 # global variables
-global players; global questions
-players = {}; questions;
+global players; global questions; global started
+players = {}; started = False
 
 # Home page
 @app.route('/')
@@ -29,10 +29,19 @@ def lobby(name):
     return render_template('lobby.html', name=name)
 
 # Check started
-# FIX THIS UP LATER
-@app.route('/check_started', methods=['GET'])
-def checkStarted():
-    return players
+@app.route('/lobby/check_started', methods=['GET'])
+def checkStarted(name):
+    data = dict()
+    data["start"] = started
+    data["players"] = (', '.join(list(players.keys())) if players else "Nobody")
+    if started:
+        return render_template('answer.html', name=name)
+    return jsonify(data)
+
+# Check started but someone pressed the button
+@app.route('/lobby/check_started', methods=['POST'])
+def start():
+    started = True
 
 # Answer
 @app.route('/answer/<name>')

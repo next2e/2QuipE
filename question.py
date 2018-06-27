@@ -52,7 +52,7 @@ def load_questions(n):
     with open('questions.txt') as f:
         return random.sample(f.read().split('\n')[:-1], n)
         
-def assign_questions(players, questions):
+def assign_questions(players):
     num = len(players)
     q = load_questions(num)
     p = generatePairs(num)
