@@ -71,3 +71,36 @@ def assign_questions(players):
 
     return players, questions
 
+def order_question_answers(players):
+    if len(players) == 0:
+        return [], dict()
+        
+    qDict = dict()
+    questions = []
+
+    for name in players:
+        q1 = players[name]['questions'][0]
+        q2 = players[name]['questions'][1]
+
+        if q1 in qDict:
+            qDict[q1]['names'].append(name)
+            qDict[q1]['answers'].append(players[name]['responses'][0])
+        else:
+            questions.append(q1)
+            qDict[q1] = dict()
+            qDict[q1]['names'] = [name]
+            qDict[q1]['answers'] = [players[name]['responses'][0]]
+
+        if q2 in qDict:
+            qDict[q2]['names'].append(name)
+            qDict[q2]['answers'].append(players[name]['responses'][1])
+        else:
+            questions.append(q2)
+            qDict[q2] = dict()
+            qDict[q2]['names'] = [name]
+            qDict[q2]['answers'] = [players[name]['responses'][1]]
+
+    random.shuffle(questions)
+    return questions, qDict
+
+
