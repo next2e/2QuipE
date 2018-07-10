@@ -6,7 +6,8 @@ $(function() {
     var j = setInterval(function() {
         $.get("check_started", function(data) {
           if(data['start'] == true) {
-            $("#main").text("Someone pressed the button to start the game!");
+            $("#main").text("The game is starting!");
+            window.location = "/answer";
           }
           $("#players").text(data['players']);
         });

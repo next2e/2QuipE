@@ -2,7 +2,9 @@ from flask import Flask, session, render_template, redirect, request, jsonify
 from werkzeug.contrib.cache import SimpleCache
 import os
 os.system("python question.py")
+
 cache = SimpleCache()
+cache.set('started', False)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'woohoowhackamole!'
@@ -14,7 +16,6 @@ players = {};
 # Home page
 @app.route('/')
 def main():
-    cache.set('started', False, timeout=60)
     return render_template('index.html', players =
         (', '.join(list(players.keys())) if players else "Nobody"))
 
@@ -34,27 +35,23 @@ def lobby(name):
 # Check started
 @app.route('/lobby/check_started', methods=['GET'])
 def checkStarted():
-    # print ("checking started!")
     data = dict()
     name = session['name']
     data['start'] = cache.get('started')
-    # print (started)
     data["players"] = (', '.join(list(players.keys())) if players else "Nobody")
-    if data['start']:
-        print ("what up my man")
-        return redirect('/answer/' + name)
     return jsonify(data)
 
 # Check started but someone pressed the button
 @app.route('/lobby/check_started', methods=['POST'])
 def start():
-    cache.set('started', True, timeout=60)
+    cache.set('started', True)
     return 'ok' #required to return something
 
 # Answer
-@app.route('/answer/<name>')
-def answer(name):
-	return render_template('answer.html', name=name)
+@app.route('/answer')
+def answer():
+    name = session['name']
+    return render_template('answer.html', name=name)
 
 @app.route('/submit', methods=['POST'])
 def submit():
