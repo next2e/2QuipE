@@ -12,7 +12,8 @@ $(function() {
         });
     }, 1000);
   $("#start").click(function() {
-    $.post("check_started", {}, function() {
+    $.post("check_started", {}, function(res) {
+      console.log(res)
       console.log("someone clicked the start button")
     })
   })
