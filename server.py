@@ -1,6 +1,8 @@
 from flask import Flask, session, render_template, redirect, request, jsonify
+from werkzeug.contrib.cache import SimpleCache
 import os
 os.system("python question.py")
+cache = SimpleCache()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'woohoowhackamole!'
@@ -9,11 +11,10 @@ app.config['SECRET_KEY'] = 'woohoowhackamole!'
 global players; global questions
 players = {};
 
-started = False
-
 # Home page
 @app.route('/')
 def main():
+    cache.set('started', False, timeout=60)
     return render_template('index.html', players =
         (', '.join(list(players.keys())) if players else "Nobody"))
 
@@ -33,18 +34,21 @@ def lobby(name):
 # Check started
 @app.route('/lobby/check_started', methods=['GET'])
 def checkStarted():
+    # print ("checking started!")
     data = dict()
     name = session['name']
-    data["start"] = started
+    data['start'] = cache.get('started')
+    # print (started)
     data["players"] = (', '.join(list(players.keys())) if players else "Nobody")
-    if started:
-        return render_template('answer.html', name=name)
+    if data['start']:
+        print ("what up my man")
+        return redirect('/answer/' + name)
     return jsonify(data)
 
 # Check started but someone pressed the button
 @app.route('/lobby/check_started', methods=['POST'])
 def start():
-    started = True
+    cache.set('started', True, timeout=60)
     return 'ok' #required to return something
 
 # Answer
