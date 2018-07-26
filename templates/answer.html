@@ -2,29 +2,38 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-    // button click
-    $(function() {
-        $('#ansSubmit').click(function() {
-            var name = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
-            console.log("name");
-            var ans1 = $("#answer1").val();
-            var ans2 = $("#answer2").val();
-            $.post('/submit', {username: name, answer1: ans1, answer2: ans2}, function(response) {
-                console.log("it worked");
+        // populate answer fields
+        $(function() {
+            $.get("get_questions", function(data) {
+                console.log(data);
+                $("#question1").text(data['first']);
+                $("#question2").text(data['second']);
+            })
+        })
+    </script>
+    <script>
+        // button click
+        $(function() {
+            $('#ansSubmit').click(function() {
+                console.log("name");
+                var ans1 = $("#answer1").val();
+                var ans2 = $("#answer2").val();
+                $.post('/submit', {answer1: ans1, answer2: ans2}, function(response) {
+                    console.log("it worked");
+                });
             });
         });
-    });
-</script>
+    </script>
 </head>
 <body>
 	
 	<p>Answer these two prompts. Be creative! You can only submit once</p>
 	<div id="q1">
-		<label for="answer1">PROMPT 1 HERE</label>
+		<label for="answer1" id="question1">PROMPT 1 HERE</label>
 		<input type="text" id="answer1">
 	</div>
 	<div id="q2">
-		<label for="answer2">PROMPT 2 HERE</label>
+		<label for="answer2" id="question2">PROMPT 2 HERE</label>
 		<input type="text" id="answer2">
 	</div>
 
