@@ -48,50 +48,43 @@ def generatePairs(num_players):
     if (repeated == 2 and len(generated) != len(q)): generated.append(tuple(counts)) # counts will have 1 pair remaining - a repeat
     return generated
 
-def load_questions(n): 
+def loadQuestions(n): 
     with open('questions.txt') as f:
         return random.sample(f.read().split('\n')[:-1], n)
         
-def assign_questions(players):
+def assignQuestions(players):
     num = len(players)
-    q = load_questions(num)
+    print (num)
+    q = loadQuestions(num)
     p = generatePairs(num)
+    print (p)
     # assign questions to players
     for i,name in enumerate(players):
-        players[name]['questions'] = {'first': q[p[i][0]], 'second': q[p[i][1]]}
+        players[name]['questions'] = {0: q[p[i][0]], 1: q[p[i][1]]}
 
-    return players
-
-def order_question_answers(players):
-    if len(players) == 0:
-        return [], dict()
-        
-    qDict = dict()
-    questions = []
-
+    # assign players to questions
+    # after answers are assigned to each question,
+    # this makes displaying answers on vote.html easier
+    # and makes updating scores easier
+    questions = dict()
     for name in players:
-        q1 = players[name]['questions'][0]
-        q2 = players[name]['questions'][1]
+        for i in range(2):
+            quest = players[name]['questions'][i]
+            if quest in questions:
+                questions[quest]['names'].append(name)
+            else:
+                questions[quest] = dict()
+                questions[quest]['names'] = [name]
+                questions[quest]['responses'] = ['','']
 
-        if q1 in qDict:
-            qDict[q1]['names'].append(name)
-            qDict[q1]['answers'].append(players[name]['responses'][0])
-        else:
-            questions.append(q1)
-            qDict[q1] = dict()
-            qDict[q1]['names'] = [name]
-            qDict[q1]['answers'] = [players[name]['responses'][0]]
+    return players, questions
 
-        if q2 in qDict:
-            qDict[q2]['names'].append(name)
-            qDict[q2]['answers'].append(players[name]['responses'][1])
-        else:
-            questions.append(q2)
-            qDict[q2] = dict()
-            qDict[q2]['names'] = [name]
-            qDict[q2]['answers'] = [players[name]['responses'][1]]
-
-    random.shuffle(questions)
-    return questions, qDict
+def orderQuestionsForAnswers(questions):
+    if len(questions) == 0:
+        return []
+        
+    orderedQuestions = [k for k in questions] # get keys --> questions
+    random.shuffle(orderedQuestions)
+    return orderedQuestions
 
 

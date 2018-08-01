@@ -4,10 +4,12 @@
     <script>
         // populate answer fields
         $(function() {
-            $.get("get_questions", function(data) {
+            var pathName = window.location.pathname;
+            var username = pathName.substring(pathName.lastIndexOf('/')+1);
+            $.get("get_questions", {name: username}, function(data) {
                 console.log(data);
-                $("#question1").text(data['first']);
-                $("#question2").text(data['second']);
+                $("#question1").text(data[0]);
+                $("#question2").text(data[1]);
             })
         })
     </script>
@@ -18,11 +20,13 @@
                 console.log("name");
                 var ans1 = $("#answer1").val();
                 var ans2 = $("#answer2").val();
-                $.post('/submit', {answer1: ans1, answer2: ans2}, function(response) {
-                    console.log("it worked");
+                var pathName = window.location.pathname;
+                var username = pathName.substring(pathName.lastIndexOf('/')+1);
+                $.post('/submit', {name: username, answer1: ans1, answer2: ans2}, function(response) {
+                        console.log("it worked");
+                    });
                 });
             });
-        });
     </script>
 </head>
 <body>

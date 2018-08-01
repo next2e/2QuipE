@@ -7,7 +7,9 @@ $(function() {
         $.get("check_started", function(data) {
           if(data['start'] == true) {
             $("#main").text("The game is starting!");
-            window.location = "/answer/" + data['name'];
+            var pathName = window.location.pathname;
+            var name = pathName.substring(pathName.lastIndexOf('/')+1);
+            window.location = "/answer/" + name;
           }
           $("#players").text(data['players']);
         });
