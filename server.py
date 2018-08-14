@@ -64,7 +64,7 @@ def start():
 # get questions assigned to each player
 @app.route('/answer/get_questions', methods=['GET'])
 def getQuestions():
-	name = request.form['name']
+	name = request.args.get('name')
 	players = cache.get('players')
 	return jsonify(players[name]['questions'])
 
